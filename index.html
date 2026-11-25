@@ -1,0 +1,1470 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>Arsip 2016 & Koran Photobooth</title>
+
+  <!-- Google Fonts: Oswald (Condensed Newspaper Masthead), Playfair Display & Merriweather (Editorial Serif), Space Mono (Typewriter/Stamp), Caveat (Scrapbook), Plus Jakarta Sans -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=Merriweather:ital,wght@0,400;0,700;1,400&family=Oswald:wght@700&family=Playfair+Display:ital,wght@0,600;0,700;0,900;1,600&family=Plus+Jakarta+Sans:wght@500;600;700&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap"
+    rel="stylesheet" />
+
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            masthead: ['"Oswald"', 'sans-serif'],
+            serifDisplay: ['"Playfair Display"', 'Georgia', 'serif'],
+            serifBody: ['"Merriweather"', 'Georgia', 'serif'],
+            mono: ['"Space Mono"', 'monospace'],
+            handwriting: ['"Caveat"', 'cursive'],
+            sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+          },
+          colors: {
+            newsprint: '#F6F4EF',
+            newsprintDark: '#EAE6DD',
+            paperCard: '#FCFBF8',
+            ink: '#141413',
+            inkMuted: '#4A473F',
+            rule: '#1E1D1A',
+            sepiaAccent: '#7C5332'
+          }
+        }
+      }
+    };
+  </script>
+
+  <!-- Tone.js for Tactile Camera Shutter & Paper Rustle SFX -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.8.49/Tone.js"></script>
+
+  <style>
+    /* =========================================================================
+       1. AUTHENTIC NEWSPRINT PAPER TEXTURE & EDITORIAL BORDERS
+       ========================================================================= */
+    :root {
+      --paper-bg: #F6F4EF;
+      --paper-card: #FCFBF8;
+      --ink-color: #141413;
+      --rule-color: #1E1D1A;
+      --warm-accent: #7C5332;
+    }
+
+    body {
+      background-color: var(--paper-bg);
+      background-image:
+        radial-gradient(rgba(20, 20, 19, 0.055) 1px, transparent 0),
+        radial-gradient(rgba(124, 83, 50, 0.04) 1px, transparent 0),
+        repeating-linear-gradient(0deg, rgba(20, 20, 19, 0.015) 0px, rgba(20, 20, 19, 0.015) 1px, transparent 1px, transparent 4px);
+      background-size: 14px 14px, 23px 23px, 100% 4px;
+      background-position: 0 0, 7px 9px, 0 0;
+      color: var(--ink-color);
+      overflow-x: hidden;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    .news-double-rule {
+      border-top: 3px solid var(--rule-color);
+      border-bottom: 1.5px solid var(--rule-color);
+      padding-top: 2px;
+    }
+
+    .news-double-rule-bottom {
+      border-top: 1.5px solid var(--rule-color);
+      border-bottom: 3px solid var(--rule-color);
+      padding-bottom: 2px;
+    }
+
+    .editorial-card {
+      background-color: var(--paper-card);
+      background-image: radial-gradient(rgba(20, 20, 19, 0.03) 1px, transparent 0);
+      background-size: 12px 12px;
+      border: 2px solid var(--rule-color);
+      box-shadow: 4px 4px 0px rgba(20, 20, 19, 0.9);
+    }
+
+    .editorial-btn {
+      border: 1.5px solid var(--rule-color);
+      box-shadow: 3px 3px 0px var(--ink-color);
+      transition: transform 0.14s ease, box-shadow 0.14s ease, background-color 0.2s ease;
+    }
+
+    .editorial-btn:active {
+      transform: translate(2px, 2px);
+      box-shadow: 1px 1px 0px var(--ink-color);
+    }
+
+    /* =========================================================================
+       2. 2016 NOSTALGIA & NEWSPAPER PHOTO FILTERS
+       ========================================================================= */
+    .filter-koran {
+      filter: grayscale(100%) contrast(116%) brightness(98%);
+    }
+
+    .filter-2016 {
+      filter: sepia(26%) contrast(106%) saturate(118%) brightness(102%);
+    }
+
+    .filter-scrapbook {
+      filter: sepia(12%) contrast(103%) saturate(108%);
+    }
+
+    .washi-tape {
+      background: repeating-linear-gradient(45deg,
+          rgba(235, 168, 130, 0.78),
+          rgba(235, 168, 130, 0.78) 6px,
+          rgba(247, 214, 181, 0.85) 6px,
+          rgba(247, 214, 181, 0.85) 12px);
+      border-left: 1px dashed rgba(20, 20, 19, 0.25);
+      border-right: 1px dashed rgba(20, 20, 19, 0.25);
+    }
+
+    /* =========================================================================
+       3. VINYL RECORD, TONEARM & WINDOWS XP MEDIA PLAYER ANIMATIONS
+       ========================================================================= */
+    @keyframes vinylSpin {
+      from {
+        transform: rotate(0deg);
+      }
+
+      to {
+        transform: rotate(360deg);
+      }
+    }
+
+    .vinyl-spinning {
+      animation: vinylSpin 5.5s linear infinite;
+    }
+
+    .vinyl-paused {
+      animation-play-state: paused;
+    }
+
+    .vinyl-tonearm {
+      transform-origin: top right;
+      transform: rotate(-26deg);
+      transition: transform 0.55s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    .vinyl-tonearm.arm-playing {
+      transform: rotate(4deg);
+    }
+
+    @keyframes modalFadeOut {
+      0% {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+      }
+
+      100% {
+        opacity: 0;
+        transform: scale(1.04) translateY(-14px);
+      }
+    }
+
+    .modal-dismissing {
+      animation: modalFadeOut 0.35s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+      pointer-events: none;
+    }
+
+    @keyframes eqPulse {
+
+      0%,
+      100% {
+        height: 6px;
+      }
+
+      50% {
+        height: 22px;
+      }
+    }
+
+    .xp-eq-bar {
+      animation: eqPulse 0.65s ease-in-out infinite;
+    }
+
+    .xp-eq-bar:nth-child(2) {
+      animation-delay: 0.15s;
+    }
+
+    .xp-eq-bar:nth-child(3) {
+      animation-delay: 0.3s;
+    }
+
+    .xp-eq-bar:nth-child(4) {
+      animation-delay: 0.1s;
+    }
+
+    .xp-eq-bar:nth-child(5) {
+      animation-delay: 0.25s;
+    }
+
+    .xp-eq-paused {
+      animation-play-state: paused !important;
+      height: 6px !important;
+    }
+
+    @keyframes shutterFlash {
+      0% {
+        opacity: 0.92;
+      }
+
+      100% {
+        opacity: 0;
+      }
+    }
+
+    .flash-active {
+      animation: shutterFlash 0.45s ease-out forwards;
+    }
+  </style>
+</head>
+
+<body class="min-h-screen font-sans selection:bg-amber-200 pb-16">
+
+  <!-- Native HTML5 Audio Element (100% anti-blokir saat deploy jika audioUrl diisi file .mp3) -->
+  <audio id="bgm-audio" loop preload="auto" playsinline></audio>
+
+  <!-- YouTube Audio Player Fallback (berada di dalam viewport agar tidak diblokir browser) -->
+  <div class="fixed bottom-2 right-2 w-[200px] h-[113px] opacity-[0.01] pointer-events-none overflow-hidden z-0"
+    aria-hidden="true">
+    <div id="yt-audio-player"></div>
+  </div>
+
+  <!-- Camera Shutter Flash Overlay -->
+  <div id="shutter-flash-overlay" class="fixed inset-0 bg-white pointer-events-none opacity-0 z-50"></div>
+
+  <!-- =========================================================================
+       INITIAL NEWSPAPER EDITION POPUP (UNLOCKS AUTOPLAY & CONTINUOUS LOOPING)
+       ========================================================================= -->
+  <div id="welcome-edition-modal"
+    class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-ink/80 backdrop-blur-xs">
+    <div id="welcome-edition-card" class="editorial-card w-full max-w-sm p-5 sm:p-6 text-center relative">
+      <div
+        class="flex items-center justify-between font-mono text-[10px] font-bold uppercase tracking-wider text-inkMuted border-b border-rule pb-2 mb-3">
+        <span>SPECIAL DISPATCH</span>
+        <span>EDISI KOLEKTOR '26</span>
+      </div>
+
+      <div class="font-mono text-[10px] tracking-[0.22em] uppercase text-sepiaAccent font-bold mb-1">
+        ★ TERBITAN KHUSUS UNTUK ★
+      </div>
+      <h2 id="welcome-modal-recipient"
+        class="font-masthead font-bold text-3xl sm:text-4xl uppercase tracking-tight text-ink mb-2">
+        KAMU
+      </h2>
+
+      <div class="news-double-rule news-double-rule-bottom py-2 my-3 bg-newsprint px-3">
+        <p id="welcome-modal-headline" class="font-serifBody italic text-xs sm:text-sm text-ink leading-relaxed">
+          "Sebuah arsip kecil berisi potongan kenangan, koran photobooth, dan lagu yang selalu mengingatkan pada
+          perjalanan kita."
+        </p>
+      </div>
+
+      <!-- Soundtrack Info Badge -->
+      <div
+        class="flex items-center justify-center gap-2 px-3 py-2 bg-newsprintDark border border-rule font-mono text-[11px] mb-4">
+        <span class="animate-pulse">💿</span>
+        <span id="welcome-modal-song" class="font-bold truncate">Sesi Potret — eńau feat. Ari Lesmana</span>
+      </div>
+
+      <button onclick="openInitialEditionPopup()"
+        class="editorial-btn w-full py-3.5 px-4 bg-ink text-newsprint hover:bg-zinc-800 font-serifDisplay font-bold text-sm sm:text-base tracking-wide flex items-center justify-center gap-2">
+        <span>📰</span>
+        <span>BUKA KORAN & PUTAR LAGU</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- =========================================================================
+       STICKY MINI ARCHIVE BAR (EDITION STATUS & AUDIO CONTROL)
+       ========================================================================= -->
+  <nav class="sticky top-0 z-40 bg-newsprint/95 backdrop-blur-xs border-b-2 border-rule px-3 py-2">
+    <div class="max-w-xl mx-auto flex items-center justify-between gap-2">
+      <div class="flex items-center gap-2 min-w-0">
+        <span
+          class="px-2 py-0.5 bg-ink text-newsprint font-mono text-[10px] font-bold tracking-wider uppercase shrink-0">
+          EDISI '26
+        </span>
+        <span id="nav-track-label" class="font-mono text-[11px] text-inkMuted truncate">
+          ♪ Sesi Potret — eńau feat. Ari Lesmana
+        </span>
+      </div>
+
+      <button id="btn-nav-audio" onclick="toggleAudioPlayback()"
+        class="editorial-btn px-2.5 py-1 bg-paperCard hover:bg-amber-100 font-mono text-[11px] font-bold flex items-center gap-1.5 shrink-0">
+        <span id="nav-audio-icon">▶</span>
+        <span id="nav-audio-text">Putar Lagu</span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- =========================================================================
+       MAIN NEWSPAPER EDITORIAL CONTAINER (4 VERTICAL BLOCKS)
+       ========================================================================= -->
+  <main class="max-w-xl mx-auto px-4 pt-5 space-y-10">
+
+    <!-- ***********************************************************************
+         BLOK 1: HALAMAN DEPAN KORAN PERSONAL (THE FRONT PAGE)
+         *********************************************************************** -->
+    <section id="block-front-page" class="editorial-card p-4 sm:p-6">
+      <!-- Top Masthead Metadata Strip (Inspired by Picture Memories Newspaper) -->
+      <div
+        class="flex items-center justify-between font-mono text-[10px] uppercase tracking-wider text-ink font-bold pb-2 border-b border-rule">
+        <span>#PICTUREYOURMEMORIES</span>
+        <span id="paper-vol-badge">NEWSPAPER ARCHIVE</span>
+        <span id="paper-price-badge">EDISI KHUSUS</span>
+      </div>
+
+      <!-- Newspaper Masthead Title -->
+      <header class="text-center py-3 sm:py-4">
+        <div class="font-mono text-[10px] tracking-[0.25em] uppercase text-sepiaAccent font-bold mb-1">
+          ★ SURAT KABAR NOSTALGIA & ARSIP DIGITAL ★
+        </div>
+        <h1 id="paper-masthead"
+          class="font-masthead font-bold text-5xl sm:text-6xl tracking-tight uppercase leading-none">
+          THE LOVE POST
+        </h1>
+      </header>
+
+      <!-- Date & Vibe Sub-bar -->
+      <div
+        class="news-double-rule news-double-rule-bottom py-1.5 px-1 flex items-center justify-between font-mono text-[10px] sm:text-[11px] font-bold uppercase mb-4">
+        <span id="paper-edition-date">KAMIS, 26 NOVEMBER 2026</span>
+        <span>2026 IS THE NEW 2016</span>
+      </div>
+
+      <!-- Main Headline -->
+      <article>
+        <h2 id="paper-headline" class="font-serifDisplay font-bold text-2xl sm:text-3xl leading-tight mb-2.5">
+          Resmi Bertahan 3 Tahun Bersama: Dari Obrolan Canggung 2016 Hingga Jadi Rumah Paling Nyaman
+        </h2>
+        <p id="paper-subheadline" class="font-serifBody italic text-xs sm:text-sm text-inkMuted leading-relaxed mb-4">
+          Laporan khusus mengenai perjalanan penuh tawa apa adanya, foto tanpa filter berlebihan, dan alasan mengapa
+          setiap hari bersamamu selalu layak dirayakan.
+        </p>
+
+        <!-- Cover Photo Frame with Instant Monochrome / 2016 Sepia Filter Switch -->
+        <div class="border-2 border-rule p-2 bg-newsprint mb-3">
+          <div class="relative aspect-[16/10] w-full overflow-hidden border border-rule bg-zinc-200">
+            <div id="cover-photo-container" class="w-full h-full filter-koran transition-all duration-300">
+              <!-- Populated by JS -->
+            </div>
+            <div
+              class="absolute bottom-2 left-2 px-2 py-0.5 bg-ink/85 text-newsprint font-mono text-[9px] uppercase tracking-wider">
+              ARSIP SAMPUL UTAMA
+            </div>
+          </div>
+          <div class="flex flex-wrap items-center justify-between gap-2 pt-2">
+            <span id="cover-caption" class="font-mono text-[10px] text-inkMuted">
+              Fig 1. Potret edisi spesial yang diabadikan apa adanya.
+            </span>
+            <div class="flex items-center gap-1">
+              <button id="btn-cover-mono" onclick="setCoverFilter('koran')"
+                class="px-2 py-1 border border-rule bg-ink text-newsprint font-mono text-[10px] font-bold">
+                Monokrom Koran
+              </button>
+              <button id="btn-cover-sepia" onclick="setCoverFilter('2016')"
+                class="px-2 py-1 border border-rule bg-paperCard text-ink font-mono text-[10px] font-bold">
+                Sepia 2016
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Editorial Secondary Column Strip (Like Reference Newspaper Bottom Layout) -->
+        <div class="grid grid-cols-12 gap-3 pt-2 pb-4 border-t border-rule items-center">
+          <div class="col-span-5">
+            <div class="font-masthead font-bold text-lg sm:text-xl uppercase leading-none mb-1.5">
+              WHAT A GREAT DAY TO CAPTURE MEMORIES
+            </div>
+            <p class="font-serifBody text-[10px] leading-relaxed text-inkMuted">
+              Setiap potongan foto menyimpan cerita jujur yang tak lekang oleh waktu—dari tawa spontan hingga momen
+              sederhana yang kini terasa paling berharga.
+            </p>
+          </div>
+          <div class="col-span-7 border border-rule p-1.5 bg-newsprint">
+            <div id="cover-secondary-box" class="aspect-[16/10] w-full overflow-hidden filter-2016">
+              <!-- Populated by JS -->
+            </div>
+          </div>
+        </div>
+
+        <!-- Primary Action CTA: Opens Edition & Triggers Audio -->
+        <button onclick="openFullEdition()"
+          class="editorial-btn w-full py-3.5 px-4 bg-ink text-newsprint hover:bg-zinc-800 font-serifDisplay font-bold text-base tracking-wide flex items-center justify-center gap-2">
+          <span>Buka Edisi Lengkap & Putar Lagu</span>
+          <span>↓</span>
+        </button>
+      </article>
+    </section>
+
+    <!-- ***********************************************************************
+         BLOK 2: SEGMEN "DAY 1 VS LATER" (2 KOLOM TETAP) & OUR RECAP
+         *********************************************************************** -->
+    <section id="block-day1-recap" class="space-y-6">
+      <!-- Section Divider -->
+      <div class="news-double-rule py-2 flex items-center justify-between">
+        <span class="font-mono text-xs font-bold uppercase tracking-wider">HALAMAN 02 • ARSIP PERBANDINGAN</span>
+        <span class="font-mono text-xs text-sepiaAccent font-bold">DAY 1 VS LATER</span>
+      </div>
+
+      <!-- Day 1 vs Later Comparison Card (2 Columns Fixed) -->
+      <div class="editorial-card p-4 sm:p-5">
+        <div class="flex items-center justify-between mb-3">
+          <div>
+            <h3 class="font-serifDisplay font-bold text-xl sm:text-2xl">Day 1 vs Later</h3>
+            <p class="font-mono text-[11px] text-inkMuted">Perbandingan jujur dari titik awal hingga hari ini</p>
+          </div>
+          <span class="px-2 py-0.5 border border-rule bg-newsprint font-mono text-[10px] font-bold uppercase">
+            2 KOLOM ARSIP
+          </span>
+        </div>
+
+        <!-- 2-Column Polaroid Comparison -->
+        <div id="compare-split-view" class="grid grid-cols-2 gap-3">
+          <!-- Day 1 Polaroid -->
+          <div class="bg-white p-2 pb-3 border border-rule shadow-xs -rotate-1">
+            <div class="aspect-square w-full overflow-hidden border border-rule mb-2 filter-2016" id="day1-photo-box">
+              <!-- Populated by JS -->
+            </div>
+            <div class="flex items-center justify-between font-mono text-[10px] font-bold text-sepiaAccent mb-0.5">
+              <span>DAY 01</span>
+              <span id="day1-year-badge">2016 VIBE</span>
+            </div>
+            <p id="day1-caption" class="font-handwriting text-lg leading-tight text-ink">
+              Masih jaim & salah tingkah pas foto bareng pertama kali.
+            </p>
+          </div>
+
+          <!-- Later Polaroid -->
+          <div class="bg-white p-2 pb-3 border border-rule shadow-xs rotate-1">
+            <div class="aspect-square w-full overflow-hidden border border-rule mb-2 filter-scrapbook"
+              id="later-photo-box">
+              <!-- Populated by JS -->
+            </div>
+            <div class="flex items-center justify-between font-mono text-[10px] font-bold text-emerald-800 mb-0.5">
+              <span>LATER</span>
+              <span id="later-year-badge">NOV 2026</span>
+            </div>
+            <p id="later-caption" class="font-handwriting text-lg leading-tight text-ink">
+              Sudah jadi versi paling apa adanya & ketawa lepas setiap hari.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Our Recap (Spotify Wrapped Editorial Cards) -->
+      <div class="editorial-card p-4 sm:p-5">
+        <div class="flex items-center justify-between border-b border-rule pb-2.5 mb-3.5">
+          <div>
+            <span class="font-mono text-[10px] font-bold uppercase text-sepiaAccent">OUR RECAP • ARCHIVE STATS</span>
+            <h3 class="font-serifDisplay font-bold text-xl">Catatan Angka Perjalanan</h3>
+          </div>
+          <span class="text-2xl">📊</span>
+        </div>
+
+        <div id="recap-stats-grid" class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+          <!-- Populated dynamically by JS -->
+        </div>
+      </div>
+    </section>
+
+    <!-- ***********************************************************************
+         BLOK 3: BILIK VIRTUAL PHOTOBOOTH 4-GRID (KODE-CONTROLLED IMAGES & TEXT)
+         *********************************************************************** -->
+    <section id="block-photobooth" class="space-y-4">
+      <div class="news-double-rule py-2 flex items-center justify-between">
+        <span class="font-mono text-xs font-bold uppercase tracking-wider">HALAMAN 03 • BILIK FOTO</span>
+        <span class="font-mono text-xs text-sepiaAccent font-bold">4-GRID STRIP</span>
+      </div>
+
+      <div class="editorial-card p-4 sm:p-5">
+        <div class="text-center mb-4">
+          <h3 class="font-serifDisplay font-bold text-2xl">Koran Photobooth Studio</h3>
+          <p class="font-serifBody text-xs text-inkMuted mt-0.5">
+            Pilih tema bingkai klasik di bawah lalu simpan strip PNG edisi spesial ini ke galerimu!
+          </p>
+        </div>
+
+        <!-- 3 Instant Frame Theme Switchers -->
+        <div class="grid grid-cols-3 gap-2 mb-4">
+          <button id="booth-theme-koran" onclick="setPhotoboothTheme('koran')"
+            class="editorial-btn py-2 px-2 bg-ink text-newsprint font-mono text-[11px] font-bold text-center">
+            🗞️ Koran B&W
+          </button>
+          <button id="booth-theme-scrapbook" onclick="setPhotoboothTheme('scrapbook')"
+            class="editorial-btn py-2 px-2 bg-paperCard text-ink font-mono text-[11px] font-bold text-center">
+            🩹 Scrapbook
+          </button>
+          <button id="booth-theme-2016" onclick="setPhotoboothTheme('2016')"
+            class="editorial-btn py-2 px-2 bg-paperCard text-ink font-mono text-[11px] font-bold text-center">
+            📷 Klasik 2016
+          </button>
+        </div>
+
+        <!-- Vertical 4-Photo Strip Preview Container -->
+        <div class="flex justify-center mb-4">
+          <div id="photobooth-strip-preview"
+            class="w-full max-w-[300px] p-3.5 border-2 border-rule bg-newsprint shadow-md transition-all duration-300">
+            <!-- Strip Top Newspaper Header -->
+            <div id="strip-header-box" class="text-center border-b border-rule pb-2 mb-2.5">
+              <div id="strip-brand-title" class="font-serifDisplay font-bold text-sm tracking-wider uppercase">
+                THE LOVE POST • BOOTH
+              </div>
+              <div id="strip-brand-sub" class="font-mono text-[9px] text-inkMuted">
+                EDITION 26.11.2026 • RAW ARCHIVE
+              </div>
+            </div>
+
+            <!-- 4 Vertical Photo Slots -->
+            <div id="photobooth-grid-slots" class="space-y-2.5">
+              <!-- Populated by JS -->
+            </div>
+
+            <!-- Strip Footer Stamp -->
+            <div id="strip-footer-box"
+              class="mt-2.5 pt-2 border-t border-rule flex items-center justify-between font-mono text-[9px]">
+              <span id="strip-footer-left">ARSIP 2016–2026</span>
+              <span id="strip-footer-right">NO. #0144</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Action Button: Export HD Strip PNG -->
+        <div>
+          <button onclick="exportPhotoboothStripPNG()"
+            class="editorial-btn w-full py-3.5 px-4 bg-ink text-newsprint hover:bg-zinc-800 font-serifDisplay font-bold text-base flex items-center justify-center gap-2">
+            <span>📸</span>
+            <span>Simpan Strip Foto (PNG)</span>
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ***********************************************************************
+         BLOK 4: SONGS FOR YOU (VINYL / WIN XP PLAYER) & SURAT PENUTUP
+         *********************************************************************** -->
+    <section id="block-closing" class="space-y-6">
+      <div class="news-double-rule py-2 flex items-center justify-between">
+        <span class="font-mono text-xs font-bold uppercase tracking-wider">HALAMAN 04 • MUSIK & KOLOM REDAKSI</span>
+        <span class="font-mono text-xs text-sepiaAccent font-bold">WORDS FROM MY HEART</span>
+      </div>
+
+      <!-- Songs For You Card with Vinyl <-> Windows XP Media Player Toggle -->
+      <div class="editorial-card p-4 sm:p-5">
+        <div class="flex items-center justify-between gap-2 mb-4">
+          <div>
+            <span class="font-mono text-[10px] font-bold uppercase text-sepiaAccent">SONGS FOR YOU</span>
+            <h3 class="font-serifDisplay font-bold text-xl">Lagu Pengiring Edisi Ini</h3>
+          </div>
+          <button id="btn-toggle-xp" onclick="togglePlayerSkin()"
+            class="editorial-btn px-2.5 py-1.5 bg-paperCard hover:bg-blue-50 font-mono text-[10px] font-bold">
+            💻 Mode Windows XP
+          </button>
+        </div>
+
+        <!-- SKIN A: Spinning Vinyl Record Player + Tonearm -->
+        <div id="player-skin-vinyl"
+          class="p-4 border border-rule bg-newsprint flex flex-col sm:flex-row items-center gap-4">
+          <!-- Vinyl Disc & Tonearm -->
+          <div class="relative w-32 h-28 shrink-0 flex items-center justify-center">
+            <div id="vinyl-disc"
+              class="vinyl-spinning vinyl-paused w-28 h-28 rounded-full bg-zinc-900 border-2 border-ink shadow-md flex items-center justify-center relative">
+              <div class="absolute inset-2 rounded-full border border-zinc-700/70"></div>
+              <div class="absolute inset-4 rounded-full border border-zinc-700/70"></div>
+              <div class="absolute inset-6 rounded-full border border-zinc-700/70"></div>
+              <div class="w-10 h-10 rounded-full bg-amber-200 border-2 border-ink flex items-center justify-center">
+                <div class="w-2.5 h-2.5 rounded-full bg-ink"></div>
+              </div>
+            </div>
+            <!-- Tonearm Needle -->
+            <div id="vinyl-tonearm" class="vinyl-tonearm absolute top-1 right-1 w-3 h-16 pointer-events-none">
+              <div class="w-3.5 h-3.5 rounded-full bg-zinc-400 border border-ink mx-auto"></div>
+              <div class="w-1 h-12 bg-zinc-600 mx-auto"></div>
+              <div class="w-2.5 h-3 bg-ink rounded-xs mx-auto -mt-0.5"></div>
+            </div>
+          </div>
+
+          <!-- Track Info & Controls -->
+          <div class="flex-1 text-center sm:text-left min-w-0">
+            <div class="inline-block px-2 py-0.5 bg-amber-200 border border-rule font-mono text-[10px] font-bold mb-1">
+              SIDE A • 33 RPM NOSTALGIA
+            </div>
+            <h4 id="vinyl-track-title" class="font-serifDisplay font-bold text-lg truncate">
+              Sesi Potret
+            </h4>
+            <p id="vinyl-track-artist" class="font-mono text-xs text-inkMuted mb-3">
+              eńau feat. Ari Lesmana
+            </p>
+            <button onclick="toggleAudioPlayback()"
+              class="editorial-btn px-4 py-2 bg-ink text-newsprint font-mono text-xs font-bold inline-flex items-center gap-2">
+              <span id="vinyl-play-icon">▶</span>
+              <span id="vinyl-play-label">Putar Piringan Hitam</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- SKIN B: Classic Windows XP Media Player Retro Box (Hidden by default) -->
+        <div id="player-skin-xp"
+          class="hidden border-2 border-[#0055EA] rounded-t-lg overflow-hidden shadow-md bg-[#ECE9D8]">
+          <div
+            class="bg-gradient-to-r from-[#0058EE] via-[#3593FF] to-[#0058EE] px-3 py-1.5 flex items-center justify-between text-white">
+            <div class="flex items-center gap-1.5 font-sans font-bold text-xs">
+              <span>🪟</span>
+              <span>Windows Media Player — Classic 2006 Skin</span>
+            </div>
+            <div class="flex gap-1">
+              <span
+                class="w-4 h-4 bg-[#E5543D] border border-white/80 rounded-xs text-[10px] flex items-center justify-center font-bold">×</span>
+            </div>
+          </div>
+          <div class="p-3.5">
+            <div class="bg-zinc-950 border-2 border-zinc-600 p-3 rounded-xs mb-3 flex items-center justify-between">
+              <div class="min-w-0 pr-2">
+                <div class="font-mono text-[10px] text-emerald-400 uppercase">NOW PLAYING (LOOP)</div>
+                <div id="xp-track-marquee" class="font-mono text-xs text-amber-300 font-bold truncate">
+                  Sesi Potret — eńau feat. Ari Lesmana
+                </div>
+              </div>
+              <div class="flex items-end gap-1 h-6 shrink-0">
+                <span class="xp-eq-bar xp-eq-paused w-1.5 bg-emerald-400"></span>
+                <span class="xp-eq-bar xp-eq-paused w-1.5 bg-emerald-400"></span>
+                <span class="xp-eq-bar xp-eq-paused w-1.5 bg-amber-400"></span>
+                <span class="xp-eq-bar xp-eq-paused w-1.5 bg-emerald-400"></span>
+                <span class="xp-eq-bar xp-eq-paused w-1.5 bg-sky-400"></span>
+              </div>
+            </div>
+            <div class="flex items-center justify-between">
+              <button onclick="toggleAudioPlayback()"
+                class="px-3.5 py-1.5 bg-gradient-to-b from-white to-zinc-300 border border-zinc-600 rounded-xs font-sans font-bold text-xs text-zinc-900 shadow-2xs active:translate-y-px">
+                ⏯ Play / Pause
+              </button>
+              <span class="font-mono text-[10px] text-zinc-600">STEREO • 128 KBPS</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Words From My Heart (Newspaper Column Letter + WhatsApp Quick Reply) -->
+      <article class="editorial-card p-5 sm:p-6">
+        <div class="border-b-2 border-rule pb-3 mb-4 text-center">
+          <div class="font-mono text-[10px] tracking-[0.2em] uppercase text-sepiaAccent font-bold">
+            KOLOM REDAKSI KHUSUS
+          </div>
+          <h3 class="font-serifDisplay font-bold text-2xl sm:text-3xl mt-0.5">
+            Words From My Heart
+          </h3>
+        </div>
+
+        <div class="font-mono text-xs font-bold mb-3">
+          Untuk <span id="letter-recipient" class="underline">Kamu</span>,
+        </div>
+
+        <!-- Two-Column Newspaper Editorial Paragraphs -->
+        <div id="letter-columns-body"
+          class="grid grid-cols-1 sm:grid-cols-2 gap-4 font-serifBody text-xs sm:text-[13px] leading-relaxed text-ink text-justify mb-5">
+          <!-- Populated dynamically by JS -->
+        </div>
+
+        <div class="border-t border-dashed border-rule pt-3 flex items-center justify-between font-mono text-xs mb-5">
+          <span>Tertanda,</span>
+          <span id="letter-sender" class="font-handwriting text-2xl font-bold text-sepiaAccent">Partner Terbaikmu</span>
+        </div>
+
+        <!-- Quick Reply via WhatsApp CTA -->
+        <a id="btn-whatsapp-reply" href="#" target="_blank" rel="noopener noreferrer"
+          class="editorial-btn w-full py-3.5 px-4 bg-[#1F4E3D] hover:bg-[#163A2D] text-newsprint font-serifDisplay font-bold text-base flex items-center justify-center gap-2">
+          <span>💬</span>
+          <span>Balas Surat Ini via WhatsApp</span>
+        </a>
+      </article>
+    </section>
+
+  </main>
+
+  <!-- Custom Editorial Toast Notification -->
+  <div id="editorial-toast"
+    class="fixed bottom-5 left-1/2 -translate-x-1/2 z-50 pointer-events-none opacity-0 transition-all duration-300 translate-y-3">
+    <div id="editorial-toast-text"
+      class="px-4 py-2 bg-ink text-newsprint border border-newsprint font-mono text-xs shadow-lg whitespace-nowrap">
+      Notifikasi Arsip
+    </div>
+  </div>
+
+  <!-- =========================================================================
+       APPLICATION SCRIPT: 3-IN-1 MATRIX, PHOTO CONFIG, AUDIO & STRIP PNG EXPORT
+       ========================================================================= -->
+  <script>
+    // =========================================================================
+    // 1. KONFIGURASI UTAMA (ATUR MODE, FOTO, TEKS PHOTOBOOTH, LAGU & WA DI SINI)
+    // =========================================================================
+    const NEWSPAPER_CONFIG = {
+      mode: 'anniv', // Pilihan mode: 'anniv' | 'wedding' | 'birthday'
+      editionDate: 'KAMIS, 26 NOVEMBER 2026',
+      yearsOrAge: '3', // Angka tahun jadian (mode 'anniv') atau usia (mode 'birthday')
+      recipientName: 'Kamu', // Nama penerima pada popup pembuka, headline & surat
+      senderName: 'Partner Terbaikmu', // Nama pengirim di bagian tanda tangan surat
+      whatsappNumber: '6281234567890', // Nomor WhatsApp tujuan balas cepat (awali dengan 62)
+
+      // PENGATURAN LAGU ASLI (Isi audioUrl dengan file .mp3 lokal agar 100% berbunyi saat deploy)
+      audioUrl: '', // Contoh: './sesi-potret.mp3' (PALING STABIL di HP Android, iOS & TikTok/IG browser)
+      customSongTitle: 'Sesi Potret',
+      customSongArtist: 'eńau feat. Ari Lesmana',
+
+      // GANTI FOTO-FOTO DI SINI (Isi dengan './nama-foto.jpg' atau URL gambar; kosong = ilustrasi vintage bawaan)
+      coverPhotoUrl: 'https://i.pinimg.com/736x/50/ad/bc/50adbc47e1034344d10563fd132298d9.jpg', // Foto sampul Halaman Depan Koran
+      secondaryCoverPhotoUrl: 'https://i.pinimg.com/1200x/32/34/19/3234194f8b4d2c0ebdee2f7169fd9016.jpg', // Foto kecil kolom kanan bawah pada Halaman Depan Koran
+      dayOnePhotoUrl: 'https://i.pinimg.com/736x/44/a7/fd/44a7fdd3635074b3a07218b7d69f7606.jpg', // Foto kolom kiri "Day 1" (2016 vibe)
+      laterPhotoUrl: 'https://i.pinimg.com/736x/19/4f/36/194f366bcc85d6834c980b6582783d70.jpg', // Foto kolom kanan "Later" (2026 terkini)
+
+      // PENGATURAN PHOTOBOOTH STUDIO (Gambar & teks dikontrol penuh dari kode ini)
+      photoboothHeader: '', // Kosongkan untuk memakai judul bawaan mode, atau isi mis. 'PICTURE MEMORIES • BOOTH'
+      photoboothSubheader: '', // Kosongkan untuk memakai subjudul bawaan mode, atau isi mis. '26.11.2026 • RAW EDITION'
+      photoboothFooterLeft: 'ARSIP 2016–2026',
+      photoboothFooterRight: 'NO. #0144',
+      photoboothPhotos: [
+        'https://i.pinimg.com/736x/dc/3a/aa/dc3aaac2f3a56051e64e994c227f0138.jpg', // Foto Strip 1 (mis. './strip-1.jpg' atau 'https://...')
+        'https://i.pinimg.com/736x/b2/f1/2b/b2f12b4f869e1b49d3a2e687eddce67c.jpg', // Foto Strip 2 (mis. './strip-2.jpg')
+        'https://i.pinimg.com/736x/66/d4/65/66d465ef9735a855dd848300eb2b361d.jpg', // Foto Strip 3 (mis. './strip-3.jpg')
+        'https://i.pinimg.com/736x/29/9d/d5/299dd566ca60873dbdd83aee8d7c577b.jpg'  // Foto Strip 4 (mis. './strip-4.jpg')
+      ],
+      photoboothCaptions: [
+        '', // Teks label Foto 1 (kosong = pakai bawaan mode)
+        '', // Teks label Foto 2
+        '', // Teks label Foto 3
+        ''  // Teks label Foto 4
+      ]
+    };
+
+    // =========================================================================
+    // 2. MATRIKS KONFIGURASI 3-IN-1 (ANNIVERSARY, WEDDING, BIRTHDAY)
+    // =========================================================================
+    const MODE_PRESETS = {
+      anniv: {
+        masthead: 'THE LOVE POST',
+        vol: 'VOL. 03 • ANNIVERSARY',
+        headline: (cfg) => `Resmi Bertahan ${cfg.yearsOrAge} Tahun Bersama: Dari Obrolan Canggung 2016 Hingga Jadi Rumah Paling Nyaman`,
+        subheadline: 'Laporan khusus mengenai perjalanan penuh tawa apa adanya, foto tanpa filter berlebihan, dan alasan mengapa setiap hari bersamamu selalu layak dirayakan.',
+        coverCaption: 'Fig 1. Potret sampul edisi khusus — diabadikan apa adanya tanpa filter berlebihan.',
+        day1Badge: 'DAY 01 • 2016 VIBE',
+        day1Caption: 'Masih jaim & salah tingkah pas pertama kali ketemu berdua.',
+        laterBadge: 'LATER • NOV 2026',
+        laterCaption: 'Sudah jadi versi paling santai & ketawa lepas setiap hari.',
+        songTitle: 'Sesi Potret',
+        songArtist: 'eńau feat. Ari Lesmana',
+        youtubeIds: ['HfMfplhGFyI', 'M4m5qqABH8o', 'CSKr9seKdgI', 'eImqMRP2Uxg', 'Nskf70DMR60'],
+        recapStats: [
+          { tag: 'TOTAL WAKTU', big: '1.095 HARI', desc: 'Melewati ribuan obrolan random, hujan sore, dan tawa tengah malam.' },
+          { tag: 'JEJAK LANGKAH', big: '18 TEMPAT', desc: 'Dari kedai kopi pinggir jalan sampai sudut kota favorit kita berdua.' },
+          { tag: 'SKOR KECOCOKAN', big: '99.9%', desc: 'Selera humor receh yang selalu nyambung tanpa perlu banyak kode.' }
+        ],
+        stripHeader: 'THE LOVE POST • BOOTH',
+        stripSub: 'ANNIVERSARY EDITION • 2016 VIBE',
+        stripTags: ['FIRST DATE', 'RAW 2016', 'MY FAVORITE', 'STILL US ♥'],
+        defaultBootTheme: '2016',
+        letterBody: [
+          'Di tengah dunia yang serba cepat dan penuh filter sempurna hari ini, aku justru paling bersyukur punya momen-momen sederhana yang rasanya jujur seperti foto-foto lama tahun 2016. Tidak perlu terlihat paling wah, cukup ada kamu di sampingku dan obrolan receh yang selalu bikin hari terasa ringan.',
+          'Terima kasih sudah bertahan, bertumbuh, dan terus jadi bagian terbaik dari setiap bab cerita yang kita tulis bareng. Semoga arsip kecil ini selalu bisa mengingatkanmu betapa berharganya setiap detik perjalanan kita—hari ini, esok, dan seterusnya.'
+        ],
+        waReplyText: 'Halo! Aku baru baca edisi spesial The Love Post-nya, terharu & suka banget sama photobooth strip-nya! ❤️'
+      },
+      wedding: {
+        masthead: 'THE WEDDING TIMES',
+        vol: 'VOL. 01 • WEDDING',
+        headline: () => 'Babak Baru Dimulai Hari Ini: Dua Langkah yang Akhirnya Menyatu dalam Satu Janji Suci',
+        subheadline: 'Edisi khusus merayakan perjalanan panjang dari masa perkenalan hingga hari bahagia penuh doa restu dari keluarga dan sahabat.',
+        coverCaption: 'Fig 1. Potret resmi pasangan berbahagia pada lembaran pertama perjalanan baru.',
+        day1Badge: 'AWAL CERITA',
+        day1Caption: 'Masa awal saling mengenal dengan sejuta rencana sederhana.',
+        laterBadge: 'HARI BAHAGIA',
+        laterCaption: 'Resmi melangkah bersama menuju masa depan yang hangat.',
+        songTitle: 'Teh Hijau',
+        songArtist: 'Tulus',
+        youtubeIds: ['722d3I_hUB4', 'Gwqr9eDSiAk', 'RO75uUZiAw0', 'zyLmavBAY7k'],
+        recapStats: [
+          { tag: 'PERJALANAN CINTA', big: '1.460 HARI', desc: 'Menuju pelaminan dengan penuh kesabaran, doa, dan tawa hangat.' },
+          { tag: 'DUA KELUARGA', big: '1 IKATAN', desc: 'Menyatukan dua cerita besar menjadi satu rumah penuh berkah.' },
+          { tag: 'DOA RESTU', big: 'TAK TERHINGGA', desc: 'Mengalir dari seluruh sahabat dan tamu undangan hari ini.' }
+        ],
+        stripHeader: 'THE WEDDING TIMES • VIP',
+        stripSub: 'MONOGRAM EDITION • OFFICIAL ARCHIVE',
+        stripTags: ['THE BEGINNING', 'FOREVER VOWS', 'HAPPILY EVER', 'JUST MARRIED'],
+        defaultBootTheme: 'koran',
+        letterBody: [
+          'Hari ini bukan sekadar perayaan, melainkan penanda dimulainya babak paling indah dalam perjalanan hidup kalian berdua. Segala tawa, perbedaan, dan cerita kecil di masa lalu kini bermuara pada satu janji untuk saling menjaga selamanya.',
+          'Selamat menempuh hidup baru! Semoga rumah tangga ini selalu dipenuhi ketenangan seperti secangkir teh hangat di pagi hari, rezeki yang lapang, dan cinta yang terus bertumbuh hingga menua bersama.'
+        ],
+        waReplyText: 'Terima kasih banyak atas edisi khusus The Wedding Times dan doa restunya! Sangat berkesan 💍✨'
+      },
+      birthday: {
+        masthead: 'DAILY CHRONICLE',
+        vol: 'SPECIAL ISSUE • BDAY',
+        headline: (cfg) => `Edisi Spesial ${cfg.recipientName} Resmi ${cfg.yearsOrAge} Tahun: Merayakan Sosok Paling Autentik Tahun Ini`,
+        subheadline: 'Kilas balik perjalanan dari foto masa kecil hingga pencapaian hari ini, dirangkum dalam lembaran koran nostalgia edisi terbatas.',
+        coverCaption: 'Fig 1. Sosok bintang utama edisi hari ini — tetap apa adanya dan selalu bersinar.',
+        day1Badge: 'THROWBACK • BOCIL',
+        day1Caption: 'Potret klasik sebelum mengenal tugas menumpuk & kopi pahit.',
+        laterBadge: 'LEVEL BARU • 2026',
+        laterCaption: 'Makin dewasa, makin tangguh, dan tetap punya selera humor terbaik.',
+        songTitle: 'Sesi Potret',
+        songArtist: 'eńau feat. Ari Lesmana',
+        youtubeIds: ['HfMfplhGFyI', 'M4m5qqABH8o', 'CSKr9seKdgI', 'eImqMRP2Uxg', 'Nskf70DMR60'],
+        recapStats: [
+          { tag: 'TOTAL USIA', big: '192.720 JAM', desc: 'Penuh cerita seru, pelajaran berharga, dan momen tak terlupakan.' },
+          { tag: 'LEVEL KECE', big: 'MAX 100%', desc: 'Selalu sukses jadi penyemangat bagi orang-orang di sekitarmu.' },
+          { tag: 'HARAPAN BARU', big: 'UNLIMITED', desc: 'Semua wishlist dan rencana baik tahun ini siap terwujud!' }
+        ],
+        stripHeader: 'DAILY CHRONICLE • BDAY',
+        stripSub: 'SPECIAL BIRTHDAY SCRAPBOOK',
+        stripTags: ['THROWBACK', 'CORE MEMORY', 'LEVEL UP!', 'MAKE A WISH'],
+        defaultBootTheme: 'scrapbook',
+        letterBody: [
+          'Selamat bertambah usia! Kalau hidup adalah sebuah surat kabar, maka edisi hari ini adalah halaman depan terbaik yang patut dirayakan dengan penuh rasa syukur. Terima kasih sudah terus bertahan dan melangkah sejauh ini dengan versi dirimu yang paling jujur.',
+          'Di usia yang baru ini, semoga kamu selalu dikelilingi hal-hal baik, kesehatan yang prima, tawa yang lepas tanpa beban, serta keberanian untuk mengejar semua impian yang sempat tertunda. Selamat merayakan harimu!'
+        ],
+        waReplyText: 'Makasih banyak buat Koran Ulang Tahun & Photobooth-nya! Keren dan nostalgia banget 🎂📰'
+      }
+    };
+
+    // =========================================================================
+    // 3. STATE & VINTAGE SVG ILLUSTRATION GENERATOR (FALLBACK & CANVAS READY)
+    // =========================================================================
+    const state = {
+      coverFilter: 'koran',
+      photoboothTheme: '2016',
+      customStripDataUrls: [...NEWSPAPER_CONFIG.photoboothPhotos],
+      playerSkin: 'vinyl',
+      audioPlaying: false,
+      ytPlayer: null,
+      ytReady: false,
+      ytPendingPlay: false,
+      ytVideoIndex: 0,
+      ytAllFailed: false,
+      sfxSynth: null
+    };
+
+    function getVintageSvgDataUrl(kind) {
+      const svgs = {
+        cover: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 400"><rect width="640" height="400" fill="#DDD3BE"/><circle cx="320" cy="185" r="115" fill="#C5B598" stroke="#1C1B18" stroke-width="5"/><circle cx="265" cy="175" r="44" fill="#F4EFE6" stroke="#1C1B18" stroke-width="5"/><circle cx="375" cy="175" r="44" fill="#E6DEC8" stroke="#1C1B18" stroke-width="5"/><path d="M235 280 Q320 220 405 280" fill="#1C1B18"/><rect x="170" y="315" width="300" height="42" fill="#1C1B18"/><text x="320" y="343" text-anchor="middle" font-family="monospace" font-weight="bold" font-size="20" fill="#F4EFE6">ARCHIVAL EDITION • 2016–2026</text></svg>`,
+        day1: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400"><rect width="400" height="400" fill="#E5DEC9"/><rect x="45" y="45" width="310" height="310" fill="#D2C5AB" stroke="#1C1B18" stroke-width="6"/><circle cx="155" cy="175" r="42" fill="#F4EFE6" stroke="#1C1B18" stroke-width="5"/><circle cx="245" cy="185" r="42" fill="#F4EFE6" stroke="#1C1B18" stroke-width="5"/><text x="200" y="315" text-anchor="middle" font-family="monospace" font-weight="bold" font-size="24" fill="#1C1B18">DAY 01 • 2016</text></svg>`,
+        later: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400"><rect width="400" height="400" fill="#F3E5D0"/><circle cx="200" cy="180" r="115" fill="#E7C9A9" stroke="#1C1B18" stroke-width="6"/><circle cx="160" cy="170" r="40" fill="#FFFFFF" stroke="#1C1B18" stroke-width="5"/><circle cx="240" cy="170" r="40" fill="#FFFFFF" stroke="#1C1B18" stroke-width="5"/><path d="M165 230 Q200 265 235 230" fill="none" stroke="#1C1B18" stroke-width="6" stroke-linecap="round"/><text x="200" y="345" text-anchor="middle" font-family="monospace" font-weight="bold" font-size="24" fill="#1C1B18">NOV 2026 • US</text></svg>`,
+        strip1: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 360"><rect width="480" height="360" fill="#E2D8C3"/><rect x="90" y="65" width="300" height="210" rx="18" fill="#1C1B18"/><circle cx="240" cy="170" r="68" fill="#4A473F" stroke="#F4EFE6" stroke-width="6"/><circle cx="240" cy="170" r="34" fill="#1C1B18"/><rect x="315" y="88" width="44" height="24" rx="4" fill="#F59E0B"/><text x="240" y="325" text-anchor="middle" font-family="monospace" font-weight="bold" font-size="22" fill="#1C1B18">ANALOG SNAP 01</text></svg>`,
+        strip2: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 360"><rect width="480" height="360" fill="#D9CEB8"/><path d="M140 210 L240 110 L340 210 Z" fill="#8C5E3C" stroke="#1C1B18" stroke-width="6"/><circle cx="335" cy="95" r="32" fill="#FBBF24" stroke="#1C1B18" stroke-width="5"/><text x="240" y="310" text-anchor="middle" font-family="monospace" font-weight="bold" font-size="22" fill="#1C1B18">GOLDEN HOUR 02</text></svg>`,
+        strip3: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 360"><rect width="480" height="360" fill="#E6DEC8"/><rect x="145" y="125" width="190" height="125" rx="16" fill="#F4EFE6" stroke="#1C1B18" stroke-width="6"/><path d="M335 145 Q375 145 375 185 Q375 225 335 225" fill="none" stroke="#1C1B18" stroke-width="8"/><text x="240" y="310" text-anchor="middle" font-family="monospace" font-weight="bold" font-size="22" fill="#1C1B18">COFFEE &amp; TALKS 03</text></svg>`,
+        strip4: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 360"><rect width="480" height="360" fill="#DDD2BC"/><path d="M240 250 C165 195 145 130 190 102 C216 86 234 108 240 124 C246 108 264 86 290 102 C335 130 315 195 240 250 Z" fill="#1C1B18"/><text x="240" y="315" text-anchor="middle" font-family="monospace" font-weight="bold" font-size="22" fill="#1C1B18">CORE MEMORY 04</text></svg>`
+      };
+      return 'data:image/svg+xml;utf8,' + encodeURIComponent(svgs[kind] || svgs.cover);
+    }
+
+    function renderPhotoImg(customUrl, fallbackKind, altText = 'Arsip Foto') {
+      const fallbackSrc = getVintageSvgDataUrl(fallbackKind);
+      if (customUrl && customUrl.trim() !== '') {
+        return `<img src="${customUrl.trim()}" alt="${altText}" class="w-full h-full object-cover" onerror="this.onerror=null;this.src='${fallbackSrc}';" />`;
+      }
+      return `<img src="${fallbackSrc}" alt="${altText}" class="w-full h-full object-cover" />`;
+    }
+
+    // =========================================================================
+    // 4. REAL AUDIO ENGINE (MP3 + SESI POTRET YOUTUBE FALLBACK & LOOPING)
+    // =========================================================================
+    function sendYouTubeCommand(funcName, args = '') {
+      const container = document.getElementById('yt-audio-player');
+      const iframe = container && container.tagName === 'IFRAME'
+        ? container
+        : container?.querySelector('iframe');
+      if (iframe && iframe.contentWindow) {
+        iframe.contentWindow.postMessage(
+          JSON.stringify({ event: 'command', func: funcName, args }),
+          '*'
+        );
+      }
+    }
+
+    window.onYouTubeIframeAPIReady = function () {
+      const preset = MODE_PRESETS[NEWSPAPER_CONFIG.mode] || MODE_PRESETS.anniv;
+      const videoList = preset.youtubeIds || ['HfMfplhGFyI'];
+      const firstId = videoList[0];
+
+      state.ytPlayer = new YT.Player('yt-audio-player', {
+        height: '113',
+        width: '200',
+        videoId: firstId,
+        playerVars: {
+          autoplay: 0,
+          controls: 0,
+          disablekb: 1,
+          enablejsapi: 1,
+          fs: 0,
+          loop: 1,
+          playlist: firstId,
+          playsinline: 1,
+          rel: 0
+        },
+        events: {
+          onReady: (e) => {
+            state.ytReady = true;
+            const iframe = e.target.getIframe?.();
+            if (iframe) {
+              iframe.setAttribute('allow', 'autoplay; encrypted-media');
+            }
+            e.target.unMute();
+            e.target.setVolume(100);
+            if (state.ytPendingPlay) {
+              e.target.playVideo();
+              sendYouTubeCommand('unMute');
+              sendYouTubeCommand('playVideo');
+            }
+          },
+          onStateChange: (e) => {
+            if (e.data === YT.PlayerState.PLAYING) {
+              state.audioPlaying = true;
+              state.ytPendingPlay = false;
+              updatePlayerVisuals();
+            } else if (e.data === YT.PlayerState.PAUSED) {
+              state.audioPlaying = false;
+              updatePlayerVisuals();
+            } else if (e.data === YT.PlayerState.ENDED) {
+              e.target.seekTo(0, true);
+              e.target.playVideo();
+            }
+          },
+          onError: () => {
+            const nextIdx = state.ytVideoIndex + 1;
+            if (nextIdx < videoList.length && state.ytPlayer) {
+              state.ytVideoIndex = nextIdx;
+              const nextId = videoList[nextIdx];
+              state.ytPlayer.loadVideoById({ videoId: nextId, startSeconds: 0 });
+              if (state.ytPendingPlay) {
+                state.ytPlayer.unMute();
+                state.ytPlayer.playVideo();
+              }
+            } else {
+              state.ytAllFailed = true;
+              state.audioPlaying = false;
+              updatePlayerVisuals();
+              if (state.ytPendingPlay) {
+                state.ytPendingPlay = false;
+                showEditorialToast('Embed YouTube diblokir hak cipta — isi file .mp3 di NEWSPAPER_CONFIG.audioUrl 🎵');
+              }
+            }
+          }
+        }
+      });
+    };
+
+    (function loadYouTubeApi() {
+      if (!NEWSPAPER_CONFIG.audioUrl && !window.YT) {
+        const script = document.createElement('script');
+        script.src = 'https://www.youtube.com/iframe_api';
+        script.onerror = () => {
+          state.ytAllFailed = true;
+        };
+        document.head.appendChild(script);
+      }
+    })();
+
+    async function triggerTactileSfx(type = 'shutter') {
+      try {
+        await Tone.start();
+        if (!state.sfxSynth) {
+          state.sfxSynth = new Tone.NoiseSynth({
+            noise: { type: 'white' },
+            envelope: { attack: 0.005, decay: 0.07, sustain: 0 }
+          }).toDestination();
+          state.sfxSynth.volume.value = -14;
+        }
+        state.sfxSynth.triggerAttackRelease(type === 'paper' ? '16n' : '32n');
+      } catch (e) { }
+    }
+
+    function startAudioPlayback() {
+      const audioEl = document.getElementById('bgm-audio');
+      if (NEWSPAPER_CONFIG.audioUrl && NEWSPAPER_CONFIG.audioUrl.trim() !== '' && audioEl) {
+        if (!audioEl.src || !audioEl.src.includes(NEWSPAPER_CONFIG.audioUrl.trim())) {
+          audioEl.src = NEWSPAPER_CONFIG.audioUrl.trim();
+        }
+        audioEl.loop = true;
+        audioEl.volume = 1.0;
+        audioEl.play().then(() => {
+          state.audioPlaying = true;
+          updatePlayerVisuals();
+        }).catch(() => {
+          showEditorialToast('Ketuk tombol Putar Lagu di bilah atas untuk memulai musik 🎵');
+        });
+        return;
+      }
+
+      state.ytPendingPlay = true;
+      if (state.ytReady && state.ytPlayer && typeof state.ytPlayer.playVideo === 'function' && !state.ytAllFailed) {
+        try {
+          state.ytPlayer.unMute();
+          state.ytPlayer.setVolume(100);
+          state.ytPlayer.playVideo();
+          sendYouTubeCommand('unMute');
+          sendYouTubeCommand('playVideo');
+          state.audioPlaying = true;
+          updatePlayerVisuals();
+        } catch (e) { }
+      } else if (state.ytAllFailed) {
+        state.ytPendingPlay = false;
+        showEditorialToast('Embed YouTube diblokir hak cipta — isi file .mp3 di NEWSPAPER_CONFIG.audioUrl 🎵');
+      } else {
+        sendYouTubeCommand('unMute');
+        sendYouTubeCommand('playVideo');
+      }
+    }
+
+    function toggleAudioPlayback() {
+      const audioEl = document.getElementById('bgm-audio');
+      if (NEWSPAPER_CONFIG.audioUrl && NEWSPAPER_CONFIG.audioUrl.trim() !== '' && audioEl) {
+        if (state.audioPlaying) {
+          audioEl.pause();
+          state.audioPlaying = false;
+        } else {
+          audioEl.play();
+          state.audioPlaying = true;
+        }
+        updatePlayerVisuals();
+        return;
+      }
+
+      if (state.ytReady && state.ytPlayer && typeof state.ytPlayer.playVideo === 'function' && !state.ytAllFailed) {
+        if (state.audioPlaying) {
+          state.ytPendingPlay = false;
+          state.ytPlayer.pauseVideo();
+          sendYouTubeCommand('pauseVideo');
+          state.audioPlaying = false;
+        } else {
+          state.ytPlayer.unMute();
+          state.ytPlayer.setVolume(100);
+          state.ytPlayer.playVideo();
+          sendYouTubeCommand('unMute');
+          sendYouTubeCommand('playVideo');
+          state.audioPlaying = true;
+        }
+        updatePlayerVisuals();
+      } else {
+        startAudioPlayback();
+      }
+    }
+
+    function updatePlayerVisuals() {
+      const navIcon = document.getElementById('nav-audio-icon');
+      const navText = document.getElementById('nav-audio-text');
+      const vinylDisc = document.getElementById('vinyl-disc');
+      const vinylArm = document.getElementById('vinyl-tonearm');
+      const vinylIcon = document.getElementById('vinyl-play-icon');
+      const vinylLabel = document.getElementById('vinyl-play-label');
+      const xpBars = document.querySelectorAll('.xp-eq-bar');
+
+      if (state.audioPlaying) {
+        navIcon.textContent = '❚❚';
+        navText.textContent = 'Jeda';
+        vinylDisc.classList.remove('vinyl-paused');
+        if (vinylArm) vinylArm.classList.add('arm-playing');
+        vinylIcon.textContent = '❚❚';
+        vinylLabel.textContent = 'Jeda Piringan Hitam';
+        xpBars.forEach((b) => b.classList.remove('xp-eq-paused'));
+      } else {
+        navIcon.textContent = '▶';
+        navText.textContent = 'Putar Lagu';
+        vinylDisc.classList.add('vinyl-paused');
+        if (vinylArm) vinylArm.classList.remove('arm-playing');
+        vinylIcon.textContent = '▶';
+        vinylLabel.textContent = 'Putar Piringan Hitam';
+        xpBars.forEach((b) => b.classList.add('xp-eq-paused'));
+      }
+    }
+
+    // =========================================================================
+    // 5. INITIAL POPUP & BLOK 1–2 INTERACTIONS
+    // =========================================================================
+    function openInitialEditionPopup() {
+      triggerTactileSfx('paper');
+      startAudioPlayback();
+
+      const modal = document.getElementById('welcome-edition-modal');
+      const card = document.getElementById('welcome-edition-card');
+      if (card) card.classList.add('modal-dismissing');
+      setTimeout(() => {
+        if (modal) modal.classList.add('hidden');
+      }, 320);
+
+      showEditorialToast('Edisi Khusus Dibuka • Lagu Berputar Loop 💿');
+    }
+
+    function openFullEdition() {
+      triggerTactileSfx('paper');
+      if (!state.audioPlaying) startAudioPlayback();
+      showEditorialToast('Menuju Halaman 02 • Arsip Perbandingan 📰');
+      document.getElementById('block-day1-recap').scrollIntoView({ behavior: 'smooth' });
+    }
+
+    function setCoverFilter(mode) {
+      state.coverFilter = mode;
+      const box = document.getElementById('cover-photo-container');
+      const btnMono = document.getElementById('btn-cover-mono');
+      const btnSepia = document.getElementById('btn-cover-sepia');
+
+      if (mode === 'koran') {
+        box.classList.remove('filter-2016');
+        box.classList.add('filter-koran');
+        btnMono.className = 'px-2 py-1 border border-rule bg-ink text-newsprint font-mono text-[10px] font-bold';
+        btnSepia.className = 'px-2 py-1 border border-rule bg-paperCard text-ink font-mono text-[10px] font-bold';
+      } else {
+        box.classList.remove('filter-koran');
+        box.classList.add('filter-2016');
+        btnSepia.className = 'px-2 py-1 border border-rule bg-ink text-newsprint font-mono text-[10px] font-bold';
+        btnMono.className = 'px-2 py-1 border border-rule bg-paperCard text-ink font-mono text-[10px] font-bold';
+      }
+    }
+
+    // =========================================================================
+    // 6. BLOK 3: VIRTUAL PHOTOBOOTH 4-GRID & HIGH-RES PNG STRIP EXPORTER
+    // =========================================================================
+    function setPhotoboothTheme(theme) {
+      state.photoboothTheme = theme;
+      triggerTactileSfx('paper');
+
+      const themes = ['koran', 'scrapbook', '2016'];
+      themes.forEach((t) => {
+        const btn = document.getElementById(`booth-theme-${t}`);
+        if (t === theme) {
+          btn.className = 'editorial-btn py-2 px-2 bg-ink text-newsprint font-mono text-[11px] font-bold text-center';
+        } else {
+          btn.className = 'editorial-btn py-2 px-2 bg-paperCard text-ink font-mono text-[11px] font-bold text-center';
+        }
+      });
+
+      const stripBox = document.getElementById('photobooth-strip-preview');
+      if (theme === 'koran') {
+        stripBox.style.backgroundColor = '#F4EFE6';
+        stripBox.style.borderColor = '#1C1B18';
+      } else if (theme === 'scrapbook') {
+        stripBox.style.backgroundColor = '#FFF9F0';
+        stripBox.style.borderColor = '#7C5332';
+      } else {
+        stripBox.style.backgroundColor = '#FAF4E8';
+        stripBox.style.borderColor = '#2C2A25';
+      }
+
+      renderPhotoboothStrip();
+    }
+
+    function renderPhotoboothStrip() {
+      const preset = MODE_PRESETS[NEWSPAPER_CONFIG.mode] || MODE_PRESETS.anniv;
+      const gridSlots = document.getElementById('photobooth-grid-slots');
+      const theme = state.photoboothTheme;
+
+      document.getElementById('strip-brand-title').textContent = NEWSPAPER_CONFIG.photoboothHeader || preset.stripHeader;
+      document.getElementById('strip-brand-sub').textContent = NEWSPAPER_CONFIG.photoboothSubheader || preset.stripSub;
+      document.getElementById('strip-footer-left').textContent = NEWSPAPER_CONFIG.photoboothFooterLeft || 'ARSIP 2016–2026';
+      document.getElementById('strip-footer-right').textContent = NEWSPAPER_CONFIG.photoboothFooterRight || 'NO. #0144';
+
+      const filterClass =
+        theme === 'koran' ? 'filter-koran' : theme === 'scrapbook' ? 'filter-scrapbook' : 'filter-2016';
+
+      const fallbackKeys = ['strip1', 'strip2', 'strip3', 'strip4'];
+      gridSlots.innerHTML = '';
+
+      for (let i = 0; i < 4; i++) {
+        const photoSrc = state.customStripDataUrls[i];
+        const customCap = NEWSPAPER_CONFIG.photoboothCaptions && NEWSPAPER_CONFIG.photoboothCaptions[i];
+        const tagText = (customCap && customCap.trim() !== '') ? customCap.trim() : (preset.stripTags[i] || `FRAME #0${i + 1}`);
+        const slotDiv = document.createElement('div');
+        slotDiv.className = 'relative aspect-[4/3] w-full border border-rule bg-zinc-200 overflow-hidden';
+
+        const washiHtml =
+          theme === 'scrapbook'
+            ? `<div class="washi-tape absolute -top-1.5 ${i % 2 === 0 ? 'left-3 -rotate-6' : 'right-3 rotate-6'} w-14 h-4 z-10 shadow-2xs"></div>`
+            : '';
+
+        const dateStampHtml =
+          theme === '2016'
+            ? `<span class="absolute bottom-1.5 right-2 font-mono text-[10px] font-bold text-amber-400 drop-shadow-[0_1px_1px_rgba(0,0,0,0.9)]">${tagText}</span>`
+            : `<span class="absolute bottom-1.5 left-2 px-1.5 py-0.5 bg-ink/80 text-newsprint font-mono text-[8px] uppercase">${tagText}</span>`;
+
+        slotDiv.innerHTML = `
+          ${washiHtml}
+          <div class="w-full h-full ${filterClass}">
+            ${renderPhotoImg(photoSrc, fallbackKeys[i], `Photobooth Frame ${i + 1}`)}
+          </div>
+          ${dateStampHtml}
+        `;
+        gridSlots.appendChild(slotDiv);
+      }
+    }
+
+    function loadImageSafe(src) {
+      return new Promise((resolve) => {
+        const img = new Image();
+        img.crossOrigin = 'anonymous';
+        img.onload = () => resolve(img);
+        img.onerror = () => resolve(null);
+        img.src = src;
+      });
+    }
+
+    async function exportPhotoboothStripPNG() {
+      triggerTactileSfx('shutter');
+
+      const flash = document.getElementById('shutter-flash-overlay');
+      flash.classList.remove('flash-active');
+      void flash.offsetWidth;
+      flash.classList.add('flash-active');
+
+      const preset = MODE_PRESETS[NEWSPAPER_CONFIG.mode] || MODE_PRESETS.anniv;
+      const theme = state.photoboothTheme;
+
+      const canvas = document.createElement('canvas');
+      canvas.width = 640;
+      canvas.height = 1920;
+      const ctx = canvas.getContext('2d');
+
+      ctx.fillStyle = theme === 'scrapbook' ? '#FFF9F0' : theme === '2016' ? '#FAF4E8' : '#F4EFE6';
+      ctx.fillRect(0, 0, 640, 1920);
+
+      ctx.strokeStyle = '#1C1B18';
+      ctx.lineWidth = 8;
+      ctx.strokeRect(18, 18, 604, 1884);
+
+      ctx.fillStyle = '#1C1B18';
+      ctx.font = 'bold 28px Georgia, serif';
+      ctx.textAlign = 'center';
+      ctx.fillText(NEWSPAPER_CONFIG.photoboothHeader || preset.stripHeader, 320, 74);
+
+      ctx.fillStyle = '#4A473F';
+      ctx.font = 'bold 16px monospace';
+      ctx.fillText(NEWSPAPER_CONFIG.photoboothSubheader || preset.stripSub, 320, 102);
+
+      ctx.strokeStyle = '#2C2A25';
+      ctx.lineWidth = 2;
+      ctx.beginPath();
+      ctx.moveTo(42, 120);
+      ctx.lineTo(598, 120);
+      ctx.stroke();
+
+      const fallbackKeys = ['strip1', 'strip2', 'strip3', 'strip4'];
+      const slotX = 46;
+      const slotW = 548;
+      const slotH = 385;
+      let currentY = 142;
+
+      for (let i = 0; i < 4; i++) {
+        const customUrl = state.customStripDataUrls[i];
+        const fallbackUrl = getVintageSvgDataUrl(fallbackKeys[i]);
+        const customCap = NEWSPAPER_CONFIG.photoboothCaptions && NEWSPAPER_CONFIG.photoboothCaptions[i];
+        const tagText = (customCap && customCap.trim() !== '') ? customCap.trim() : (preset.stripTags[i] || `FRAME #0${i + 1}`);
+        let img = customUrl && customUrl.trim() !== '' ? await loadImageSafe(customUrl.trim()) : null;
+        if (!img) {
+          img = await loadImageSafe(fallbackUrl);
+        }
+
+        ctx.save();
+        if (theme === 'koran') {
+          ctx.filter = 'grayscale(100%) contrast(118%)';
+        } else if (theme === '2016') {
+          ctx.filter = 'sepia(26%) contrast(106%) saturate(118%)';
+        } else {
+          ctx.filter = 'sepia(12%) contrast(103%)';
+        }
+
+        if (img) {
+          const scale = Math.max(slotW / img.width, slotH / img.height);
+          const drawW = img.width * scale;
+          const drawH = img.height * scale;
+          const offsetX = slotX + (slotW - drawW) / 2;
+          const offsetY = currentY + (slotH - drawH) / 2;
+
+          ctx.beginPath();
+          ctx.rect(slotX, currentY, slotW, slotH);
+          ctx.clip();
+          ctx.drawImage(img, offsetX, offsetY, drawW, drawH);
+        } else {
+          ctx.fillStyle = '#E6DEC8';
+          ctx.fillRect(slotX, currentY, slotW, slotH);
+        }
+        ctx.restore();
+
+        ctx.strokeStyle = '#1C1B18';
+        ctx.lineWidth = 3;
+        ctx.strokeRect(slotX, currentY, slotW, slotH);
+
+        if (theme === 'scrapbook') {
+          ctx.save();
+          ctx.translate(i % 2 === 0 ? slotX + 55 : slotX + slotW - 55, currentY + 4);
+          ctx.rotate(i % 2 === 0 ? -0.12 : 0.12);
+          ctx.fillStyle = 'rgba(235, 168, 130, 0.85)';
+          ctx.fillRect(-52, -12, 104, 24);
+          ctx.restore();
+        } else if (theme === '2016') {
+          ctx.fillStyle = '#FBBF24';
+          ctx.font = 'bold 18px monospace';
+          ctx.textAlign = 'right';
+          ctx.fillText(tagText, slotX + slotW - 14, currentY + slotH - 14);
+        } else {
+          ctx.fillStyle = 'rgba(28, 27, 24, 0.82)';
+          ctx.fillRect(slotX + 12, currentY + slotH - 34, 195, 24);
+          ctx.fillStyle = '#F4EFE6';
+          ctx.font = 'bold 13px monospace';
+          ctx.textAlign = 'left';
+          ctx.fillText(tagText, slotX + 20, currentY + slotH - 18);
+        }
+
+        currentY += slotH + 22;
+      }
+
+      ctx.strokeStyle = '#2C2A25';
+      ctx.lineWidth = 2;
+      ctx.beginPath();
+      ctx.moveTo(42, currentY + 4);
+      ctx.lineTo(598, currentY + 4);
+      ctx.stroke();
+
+      ctx.fillStyle = '#1C1B18';
+      ctx.font = 'bold 18px monospace';
+      ctx.textAlign = 'left';
+      ctx.fillText(NEWSPAPER_CONFIG.photoboothFooterLeft || 'ARSIP 2016–2026', 46, currentY + 38);
+      ctx.textAlign = 'right';
+      ctx.fillText(NEWSPAPER_CONFIG.photoboothFooterRight || 'NO. #0144', 594, currentY + 38);
+
+      const link = document.createElement('a');
+      link.download = `Koran-Photobooth-${NEWSPAPER_CONFIG.mode.toUpperCase()}-Strip.png`;
+      link.href = canvas.toDataURL('image/png');
+      link.click();
+
+      showEditorialToast('Strip Photobooth 4-Grid (PNG) berhasil disimpan! 📸');
+    }
+
+    // =========================================================================
+    // 7. BLOK 4: PLAYER SKIN TOGGLE & EDITORIAL INITIALIZATION
+    // =========================================================================
+    function togglePlayerSkin() {
+      triggerTactileSfx('paper');
+      const vinylBox = document.getElementById('player-skin-vinyl');
+      const xpBox = document.getElementById('player-skin-xp');
+      const toggleBtn = document.getElementById('btn-toggle-xp');
+
+      if (state.playerSkin === 'vinyl') {
+        state.playerSkin = 'xp';
+        vinylBox.classList.add('hidden');
+        xpBox.classList.remove('hidden');
+        toggleBtn.textContent = '💿 Mode Vinyl Disc';
+      } else {
+        state.playerSkin = 'vinyl';
+        xpBox.classList.add('hidden');
+        vinylBox.classList.remove('hidden');
+        toggleBtn.textContent = '💻 Mode Windows XP';
+      }
+    }
+
+    let toastTimeout = null;
+    function showEditorialToast(message) {
+      const toast = document.getElementById('editorial-toast');
+      document.getElementById('editorial-toast-text').textContent = message;
+      toast.classList.remove('opacity-0', 'translate-y-3');
+      toast.classList.add('opacity-100', 'translate-y-0');
+
+      clearTimeout(toastTimeout);
+      toastTimeout = setTimeout(() => {
+        toast.classList.remove('opacity-100', 'translate-y-0');
+        toast.classList.add('opacity-0', 'translate-y-3');
+      }, 2800);
+    }
+
+    function hydrateNewspaperEdition() {
+      const preset = MODE_PRESETS[NEWSPAPER_CONFIG.mode] || MODE_PRESETS.anniv;
+
+      // 1. Front Page Masthead & Photos
+      document.getElementById('paper-vol-badge').textContent = preset.vol;
+      document.getElementById('paper-masthead').textContent = preset.masthead;
+      document.getElementById('paper-edition-date').textContent = NEWSPAPER_CONFIG.editionDate;
+      document.getElementById('paper-headline').textContent = preset.headline(NEWSPAPER_CONFIG);
+      document.getElementById('paper-subheadline').textContent = preset.subheadline;
+      document.getElementById('cover-caption').textContent = preset.coverCaption;
+
+      document.getElementById('cover-photo-container').innerHTML = renderPhotoImg(
+        NEWSPAPER_CONFIG.coverPhotoUrl,
+        'cover',
+        'Foto Sampul Koran'
+      );
+
+      document.getElementById('cover-secondary-box').innerHTML = renderPhotoImg(
+        NEWSPAPER_CONFIG.secondaryCoverPhotoUrl || NEWSPAPER_CONFIG.laterPhotoUrl,
+        'later',
+        'Foto Kolom Arsip'
+      );
+
+      // 2. Day 1 vs Later (2 Columns Fixed)
+      document.getElementById('day1-year-badge').textContent = preset.day1Badge;
+      document.getElementById('day1-caption').textContent = preset.day1Caption;
+      document.getElementById('later-year-badge').textContent = preset.laterBadge;
+      document.getElementById('later-caption').textContent = preset.laterCaption;
+
+      document.getElementById('day1-photo-box').innerHTML = renderPhotoImg(
+        NEWSPAPER_CONFIG.dayOnePhotoUrl,
+        'day1',
+        'Foto Day 1'
+      );
+      document.getElementById('later-photo-box').innerHTML = renderPhotoImg(
+        NEWSPAPER_CONFIG.laterPhotoUrl,
+        'later',
+        'Foto Later'
+      );
+
+      // 3. Our Recap Cards
+      const recapGrid = document.getElementById('recap-stats-grid');
+      recapGrid.innerHTML = preset.recapStats
+        .map(
+          (item) => `
+          <div class="p-3 border border-rule bg-newsprint flex flex-col justify-between">
+            <span class="font-mono text-[9px] font-bold uppercase text-sepiaAccent">${item.tag}</span>
+            <div class="font-serifDisplay font-bold text-xl my-1">${item.big}</div>
+            <p class="font-serifBody text-[11px] leading-snug text-inkMuted">${item.desc}</p>
+          </div>
+        `
+        )
+        .join('');
+
+      // 4. Photobooth Initial Theme
+      setPhotoboothTheme(preset.defaultBootTheme);
+
+      // 5. Audio Track Info, Welcome Popup & Letter
+      const songTitle = NEWSPAPER_CONFIG.customSongTitle || preset.songTitle;
+      const songArtist = NEWSPAPER_CONFIG.customSongArtist || preset.songArtist;
+      document.getElementById('nav-track-label').textContent = `♪ ${songTitle} — ${songArtist}`;
+      document.getElementById('vinyl-track-title').textContent = songTitle;
+      document.getElementById('vinyl-track-artist').textContent = songArtist;
+      document.getElementById('xp-track-marquee').textContent = `${songTitle} — ${songArtist}`;
+
+      const welcomeRecipientEl = document.getElementById('welcome-modal-recipient');
+      const welcomeSongEl = document.getElementById('welcome-modal-song');
+      if (welcomeRecipientEl) welcomeRecipientEl.textContent = NEWSPAPER_CONFIG.recipientName.toUpperCase();
+      if (welcomeSongEl) welcomeSongEl.textContent = `${songTitle} — ${songArtist}`;
+
+      document.getElementById('letter-recipient').textContent = NEWSPAPER_CONFIG.recipientName;
+      document.getElementById('letter-sender').textContent = NEWSPAPER_CONFIG.senderName;
+      document.getElementById('letter-columns-body').innerHTML = preset.letterBody
+        .map((p) => `<p>${p}</p>`)
+        .join('');
+
+      // 6. WhatsApp Quick Reply Link
+      const waText = encodeURIComponent(preset.waReplyText);
+      const waPhone = NEWSPAPER_CONFIG.whatsappNumber.replace(/[^0-9]/g, '');
+      document.getElementById('btn-whatsapp-reply').href = `https://wa.me/${waPhone}?text=${waText}`;
+    }
+
+    window.addEventListener('DOMContentLoaded', () => {
+      hydrateNewspaperEdition();
+    });
+  </script>
+</body>
+
+</html>
